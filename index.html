@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Photo Studio PRO</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Main Style -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- jsPDF for High-Quality Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Navbar & Wizard -->
+        <header class="topbar glass-panel">
+            <div class="logo">
+                <i data-lucide="aperture"></i>
+                <h1>AI Studio <span class="badge">PRO</span></h1>
+            </div>
+            
+            <div class="wizard-steps">
+                <div class="step active" id="step-1">
+                    <div class="step-num">1</div>
+                    <div class="step-text">Upload<br><span>(फोटो डालें)</span></div>
+                </div>
+                <div class="step-divider"></div>
+                <div class="step" id="step-2">
+                    <div class="step-num">2</div>
+                    <div class="step-text">Fix Face / BG<br><span>(चेहरा / बैकग्राउंड)</span></div>
+                </div>
+                <div class="step-divider"></div>
+                <div class="step" id="step-3">
+                    <div class="step-num">3</div>
+                    <div class="step-text">Print Layout<br><span>(प्रिंट लेआउट)</span></div>
+                </div>
+                <div class="step-divider"></div>
+                <div class="step" id="step-4">
+                    <div class="step-num">4</div>
+                    <div class="step-text">Save / Print<br><span>(प्रिंट करें)</span></div>
+                </div>
+            </div>
+
+            <div class="top-actions">
+                <button class="icon-btn" id="btn-service-mode" title="Service Center Settings">
+                    <i data-lucide="settings"></i>
+                </button>
+                <button class="icon-btn" id="btn-theme-toggle" title="Toggle Theme">
+                    <i data-lucide="moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <div class="main-workspace">
+            <!-- Left Sidebar - Tools -->
+            <aside class="sidebar-left glass-panel">
+                <div class="upload-area">
+                    <button class="btn btn-mega-primary" id="btn-upload">
+                        <i data-lucide="upload-cloud"></i> Upload Photo (फोटो)
+                    </button>
+                    <input type="file" id="file-input" accept="image/*" hidden>
+                </div>
+
+                <div class="tool-section mt-4">
+                    <h3>AI Magic (ऑटोमैटिक)</h3>
+                    <button class="tool-btn magic" data-action="auto-enhance">
+                        <i data-lucide="wand-2"></i>
+                        <div class="tool-text">
+                            <span class="en">Auto Enhance</span>
+                            <span class="hi">ऑटो सही करें</span>
+                        </div>
+                    </button>
+                    <button class="tool-btn magic" data-action="studio-photo">
+                        <i data-lucide="user-check"></i>
+                        <div class="tool-text">
+                            <span class="en">Studio Portrait</span>
+                            <span class="hi">स्टूडियो जैसी फोटो</span>
+                        </div>
+                    </button>
+                    <button class="tool-btn magic" data-action="cafe-menu">
+                        <i data-lucide="coffee"></i>
+                        <div class="tool-text">
+                            <span class="en">Café Menu Ready</span>
+                            <span class="hi">फ़ूड मेनू के लिए</span>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="tool-section mt-4">
+                    <h3>Manual Adjust (मैनुअल)</h3>
+                    <div class="slider-group">
+                        <label>Brightness (चमक) <span id="val-brightness">0</span></label>
+                        <input type="range" id="slider-brightness" min="-100" max="100" value="0">
+                    </div>
+                    <div class="slider-group">
+                        <label>Contrast (कंट्रास्ट) <span id="val-contrast">0</span></label>
+                        <input type="range" id="slider-contrast" min="-100" max="100" value="0">
+                    </div>
+                    <div class="slider-group">
+                        <label>Saturation (रंग) <span id="val-saturation">0</span></label>
+                        <input type="range" id="slider-saturation" min="-100" max="100" value="0">
+                    </div>
+                    <div class="slider-group">
+                        <label>Sharpen (प्रिंट के लिए) <span id="val-sharpen">0</span></label>
+                        <input type="range" id="slider-sharpen" min="0" max="100" value="0">
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <button class="btn btn-outline w-100" id="btn-undo" disabled>
+                            <i data-lucide="undo"></i> Undo
+                        </button>
+                        <button class="btn btn-outline w-100" id="btn-redo" disabled>
+                            <i data-lucide="redo"></i> Redo
+                        </button>
+                    </div>
+                    <button class="btn btn-outline w-100" id="btn-reset-edits">
+                        <i data-lucide="rotate-ccw"></i> Reset Edits (रीसेट)
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Center Canvas -->
+            <main class="canvas-area">
+                <!-- Quality Warning Banner -->
+                <div class="quality-warning glass-panel" id="quality-warning" style="display: none;">
+                    <i data-lucide="alert-triangle"></i>
+                    <div style="flex: 1;">
+                        <strong>Low Resolution Warning!</strong>
+                        <span>This will be blurry for large print; use original camera photo. (यह बड़े प्रिंट के लिए धुंधला होगा।)</span>
+                    </div>
+                    <button class="icon-btn" id="btn-close-warning" style="width: 30px; height: 30px; border: none; background: transparent;">
+                        <i data-lucide="x"></i>
+                    </button>
+                </div>
+
+                <div class="canvas-wrapper glass-panel" id="canvas-container">
+                    <div class="placeholder-text" id="canvas-placeholder">
+                        <i data-lucide="image-plus" style="width: 64px; height: 64px; opacity: 0.5;"></i>
+                        <h2>Upload a photo to start</h2>
+                        <p>Beginners & Café Owners Edition</p>
+                    </div>
+                    <canvas id="ui-canvas" style="display: none;"></canvas>
+                    
+                    <!-- Interactive Crop Actions -->
+                    <div id="crop-actions" class="glass-panel" style="display: none; position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 10px 15px; display: flex; gap: 10px; z-index: 100;">
+                        <button class="action-btn primary" id="btn-apply-crop" style="width: auto; padding: 8px 15px;"><i data-lucide="check"></i> Apply Crop</button>
+                        <button class="action-btn" id="btn-cancel-crop" style="width: auto; padding: 8px 15px;"><i data-lucide="x"></i> Cancel</button>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Right Sidebar - Print Studio -->
+            <aside class="sidebar-right glass-panel">
+                <div class="tabs">
+                    <button class="tab-btn active" data-target="tab-passport">Passport</button>
+                    <button class="tab-btn" data-target="tab-presets">Presets</button>
+                </div>
+
+                <div class="tab-content active" id="tab-passport">
+                    <div class="print-section">
+                        <h3>1. Crop Format (काटें)</h3>
+                        <button class="action-btn primary" id="btn-make-passport">
+                            <i data-lucide="user-square"></i> Crop to Passport (3.5x4.5cm)
+                        </button>
+                        <p class="help-text">Auto-adjusts to strict ID requirements.</p>
+                    </div>
+
+                    <div class="print-section mt-4">
+                        <h3>2. A4 Layout (लेआउट)</h3>
+                        <select id="passport-layout" class="glass-select mb-2">
+                            <option value="6">6 Photos (Top Row) - Normal</option>
+                            <option value="12">12 Photos (2 Rows) - Good</option>
+                            <option value="24">24 Photos (Full Grid) - Better</option>
+                            <option value="32" selected>32 Photos (Max Save) - Best Profit!</option>
+                            <option value="custom">Custom Quantity (कस्टम)</option>
+                        </select>
+                        <input type="number" id="custom-layout-qty" class="glass-input mb-2" style="display: none;" placeholder="Enter number of photos (e.g., 5)" min="1" max="36">
+                        <button class="action-btn" id="btn-generate-sheet">
+                            <i data-lucide="layout-grid"></i> Generate A4 Sheet
+                        </button>
+                    </div>
+
+                    <div class="print-action-box mt-4">
+                        <button class="btn btn-mega-success" id="btn-export-pdf">
+                            <i data-lucide="file-down"></i> Save High-Res PDF
+                        </button>
+                        <button class="btn btn-mega-print mt-2" id="btn-print">
+                            <i data-lucide="printer"></i> PRINT NOW (प्रिंट)
+                        </button>
+                        <p class="profit-tip"><i data-lucide="trending-up"></i> कम पेपर लगेगा, ज़्यादा फोटो बनेगी → ज़्यादा प्रॉफिट</p>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tab-presets">
+                    <div class="preset-grid">
+                        <div class="preset-card" data-preset="studio">Studio Classic</div>
+                        <div class="preset-card" data-preset="cafe">Café Cozy</div>
+                        <div class="preset-card" data-preset="food">Street Food</div>
+                        <div class="preset-card" data-preset="bw">B&W ID</div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Service Center Modal -->
+    <div class="modal" id="settings-modal">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h2><i data-lucide="settings"></i> Service Center Mode</h2>
+                <button class="icon-btn" id="btn-close-settings"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Café Name / Branding (Appears on A4 Print Bottom)</label>
+                    <input type="text" id="setting-cafe-name" class="glass-input" placeholder="e.g. My Cafe Center">
+                </div>
+                <div class="form-group mt-3">
+                    <label>Passport Photo Price (₹)</label>
+                    <input type="number" id="setting-price" class="glass-input" value="10">
+                </div>
+                <button class="btn btn-primary mt-4" id="btn-save-settings">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
