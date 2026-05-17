@@ -7,8 +7,8 @@
     --primary: #6366f1;
     --primary-hover: #4f46e5;
     --secondary: #ec4899;
-    --accent: #10b981;
-    --accent-hover: #059669;
+    --accent: #047857;
+    --accent-hover: #064e3b;
     --warning: #f59e0b;
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
@@ -87,12 +87,12 @@ body {
 .btn-mega-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); width: 100%; font-size: 1.1rem; padding: 15px; }
 .btn-mega-success { background: var(--accent); width: 100%; font-size: 1.1rem; padding: 15px; }
 .btn-mega-success:hover { background: var(--accent-hover); }
-.btn-mega-print { background: linear-gradient(135deg, #10b981, #059669); width: 100%; font-size: 1.2rem; padding: 16px; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); }
+.btn-mega-print { background: linear-gradient(135deg, #047857, #064e3b); width: 100%; font-size: 1.2rem; padding: 16px; box-shadow: 0 4px 15px rgba(4, 120, 87, 0.4); }
 .btn-outline { background: transparent; border: 1px solid var(--glass-border); color: var(--text-main); }
 .btn-outline:hover { background: rgba(255,255,255,0.1); }
 
 /* Tool Sections */
-.tool-section h3 { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+.tool-section h2 { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
 .tool-btn { display: flex; align-items: center; gap: 15px; width: 100%; padding: 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); border-radius: 10px; color: var(--text-main); cursor: pointer; transition: 0.2s; text-align: left; margin-bottom: 8px; }
 .tool-btn:hover { background: rgba(255, 255, 255, 0.1); transform: translateX(2px); }
 .tool-btn.magic { background: linear-gradient(90deg, rgba(99, 102, 241, 0.1), transparent); border-left: 3px solid var(--primary); }
@@ -129,7 +129,7 @@ canvas.crop-mode:active { cursor: grabbing; }
 .tab-content.active { display: block; }
 
 /* Print Section */
-.print-section h3 { font-size: 0.9rem; color: var(--text-main); margin-bottom: 12px; font-weight: 600; }
+.print-section h2 { font-size: 0.9rem; color: var(--text-main); margin-bottom: 12px; font-weight: 600; }
 .action-btn { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255, 255, 255, 0.05); color: var(--text-main); display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; font-weight: 500; transition: 0.2s; }
 .action-btn:hover { background: rgba(255, 255, 255, 0.1); }
 .action-btn.primary { background: rgba(99, 102, 241, 0.15); border-color: var(--primary); color: var(--primary); }
