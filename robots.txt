@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vijaysahinternetcafe.github.io/photoediter/sitemap.xml
