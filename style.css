@@ -34,8 +34,8 @@ body {
         radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.15), transparent 30%);
     background-attachment: fixed;
     color: var(--text-main);
-    height: 100vh;
-    overflow: hidden;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
 }
 
 .glass-panel {
@@ -54,7 +54,7 @@ body {
 .mb-2 { margin-bottom: 8px; }
 .w-100 { width: 100%; }
 
-.app-container { display: flex; flex-direction: column; height: 100vh; padding: 12px; gap: 12px; }
+.app-container { display: flex; flex-direction: column; height: calc(100vh - 70px); padding: 12px; gap: 12px; margin: 0 auto; max-width: 1400px; width: 100%; }
 
 /* Header & Wizard */
 .topbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 24px; height: 70px; }
@@ -77,7 +77,7 @@ body {
 .icon-btn:hover { background: rgba(255,255,255,0.2); }
 
 /* Workspace Layout */
-.main-workspace { display: flex; flex: 1; gap: 12px; height: calc(100vh - 94px); }
+.main-workspace { display: flex; flex: 1; gap: 12px; height: calc(100vh - 164px); }
 .sidebar-left, .sidebar-right { width: 320px; padding: 20px; display: flex; flex-direction: column; overflow-y: auto; }
 
 /* Buttons & Inputs */
@@ -154,3 +154,156 @@ canvas.crop-mode:active { cursor: grabbing; }
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+
+/* ========================================================= */
+/* New Additions: Navigation, Sections, Mobile Responsiveness */
+/* ========================================================= */
+
+/* Navbar */
+.main-nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+}
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 15px 24px;
+}
+.nav-container .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+.nav-links li a {
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: 0.3s;
+    padding: 5px 10px;
+    border-radius: 6px;
+}
+.nav-links li a:hover, .nav-links li a.active {
+    background: rgba(99, 102, 241, 0.15);
+    color: var(--primary);
+}
+.hamburger {
+    display: none;
+    cursor: pointer;
+    color: var(--text-main);
+}
+
+/* Sections */
+.section-home {
+    min-height: calc(100vh - 70px);
+}
+.content-section {
+    padding: 60px 20px;
+    display: flex;
+    justify-content: center;
+}
+.content-section .container {
+    max-width: 900px;
+    width: 100%;
+    padding: 40px;
+    line-height: 1.6;
+}
+.content-section h2 {
+    color: var(--primary);
+    margin-bottom: 20px;
+    font-size: 2rem;
+    border-bottom: 2px solid var(--glass-border);
+    padding-bottom: 10px;
+}
+.content-section h3 {
+    color: var(--secondary);
+    margin-top: 25px;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+.content-section p, .content-section ul, .content-section ol {
+    margin-bottom: 15px;
+    color: var(--text-muted);
+}
+.content-section ul, .content-section ol {
+    margin-left: 20px;
+}
+.content-section li {
+    margin-bottom: 8px;
+}
+.content-section b {
+    color: var(--text-main);
+}
+
+/* Footer */
+.main-footer {
+    text-align: center;
+    padding: 30px;
+    background: rgba(0,0,0,0.3);
+    border-top: 1px solid var(--glass-border);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 992px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--bg-base);
+        padding: 20px;
+        border-bottom: 1px solid var(--glass-border);
+    }
+    .nav-links.active {
+        display: flex;
+    }
+    .hamburger {
+        display: block;
+    }
+    .main-workspace {
+        flex-direction: column;
+        height: auto;
+    }
+    .sidebar-left, .sidebar-right {
+        width: 100%;
+        height: auto;
+        max-height: 400px;
+    }
+    .canvas-area {
+        height: 50vh;
+        min-height: 400px;
+    }
+    .app-container {
+        height: auto;
+    }
+    .topbar {
+        flex-direction: column;
+        height: auto;
+        gap: 15px;
+        padding: 15px;
+    }
+    .wizard-steps {
+        flex-wrap: wrap;
+    }
+}
