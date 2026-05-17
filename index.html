@@ -9,11 +9,14 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Main Style -->
+    <link rel="preload" href="style.css" as="style">
     <link rel="stylesheet" href="style.css">
     <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@latest" defer></script>
     <!-- jsPDF for High-Quality Export -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+    <!-- Main App Logic -->
+    <script src="app.js" defer></script>
 </head>
 <body>
     <!-- Modern Navigation -->
@@ -90,7 +93,7 @@
                 </div>
 
                 <div class="tool-section mt-4">
-                    <h3>AI Magic (ऑटोमैटिक)</h3>
+                    <h2>AI Magic (ऑटोमैटिक)</h2>
                     <button class="tool-btn magic" data-action="auto-enhance">
                         <i data-lucide="wand-2"></i>
                         <div class="tool-text">
@@ -115,22 +118,22 @@
                 </div>
 
                 <div class="tool-section mt-4">
-                    <h3>Manual Adjust (मैनुअल)</h3>
+                    <h2>Manual Adjust (मैनुअल)</h2>
                     <div class="slider-group">
-                        <label>Brightness (चमक) <span id="val-brightness">0</span></label>
-                        <input type="range" id="slider-brightness" min="-100" max="100" value="0">
+                        <label for="slider-brightness">Brightness (चमक) <span id="val-brightness">0</span></label>
+                        <input type="range" id="slider-brightness" min="-100" max="100" value="0" aria-label="Brightness">
                     </div>
                     <div class="slider-group">
-                        <label>Contrast (कंट्रास्ट) <span id="val-contrast">0</span></label>
-                        <input type="range" id="slider-contrast" min="-100" max="100" value="0">
+                        <label for="slider-contrast">Contrast (कंट्रास्ट) <span id="val-contrast">0</span></label>
+                        <input type="range" id="slider-contrast" min="-100" max="100" value="0" aria-label="Contrast">
                     </div>
                     <div class="slider-group">
-                        <label>Saturation (रंग) <span id="val-saturation">0</span></label>
-                        <input type="range" id="slider-saturation" min="-100" max="100" value="0">
+                        <label for="slider-saturation">Saturation (रंग) <span id="val-saturation">0</span></label>
+                        <input type="range" id="slider-saturation" min="-100" max="100" value="0" aria-label="Saturation">
                     </div>
                     <div class="slider-group">
-                        <label>Sharpen (प्रिंट के लिए) <span id="val-sharpen">0</span></label>
-                        <input type="range" id="slider-sharpen" min="0" max="100" value="0">
+                        <label for="slider-sharpen">Sharpen (प्रिंट के लिए) <span id="val-sharpen">0</span></label>
+                        <input type="range" id="slider-sharpen" min="0" max="100" value="0" aria-label="Sharpen">
                     </div>
                     <div style="display: flex; gap: 10px; margin-bottom: 10px;">
                         <button class="btn btn-outline w-100" id="btn-undo" disabled>
@@ -185,7 +188,7 @@
 
                 <div class="tab-content active" id="tab-passport">
                     <div class="print-section">
-                        <h3>1. Crop Format (काटें)</h3>
+                        <h2>1. Crop Format (काटें)</h2>
                         <button class="action-btn primary" id="btn-make-passport">
                             <i data-lucide="user-square"></i> Crop to Passport (3.5x4.5cm)
                         </button>
@@ -193,8 +196,8 @@
                     </div>
 
                     <div class="print-section mt-4">
-                        <h3>2. A4 Layout (लेआउट)</h3>
-                        <select id="passport-layout" class="glass-select mb-2">
+                        <h2 id="layout-heading">2. A4 Layout (लेआउट)</h2>
+                        <select id="passport-layout" class="glass-select mb-2" aria-labelledby="layout-heading">
                             <option value="6">6 Photos (Top Row) - Normal</option>
                             <option value="12">12 Photos (2 Rows) - Good</option>
                             <option value="24">24 Photos (Full Grid) - Better</option>
@@ -320,9 +323,12 @@
         </div>
     </div>
 
-    <script src="app.js"></script>
     <script>
-        lucide.createIcons();
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
     </script>
 </body>
 </html>
